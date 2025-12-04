@@ -27,7 +27,6 @@ urlpatterns = [
 urlpatterns += [
     path('catalog/', include('catalog.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
-
 ]
 
 # перенаправление с корневого URL на catalog/
