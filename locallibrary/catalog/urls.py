@@ -1,5 +1,7 @@
 from django.urls import path
 from . import views
+from django.urls import path
+from . import views
 
 
 urlpatterns = [
@@ -13,3 +15,19 @@ urlpatterns = [
 urlpatterns += [
     path('mybooks/', views.LoanedBooksByUserListView.as_view(), name='my-borrowed'),
 ]
+urlpatterns = [
+    # ... существующие URL ...
+    path('mybooks/', views.LoanedBooksByUserListView.as_view(), name='my-borrowed'),
+    path('all-borrowed/', views.AllBooksListView.as_view(), name='all-borrowed'),
+]
+
+urlpatterns += [
+    path('author/create/', views.AuthorCreate.as_view(), name='author_create'),
+    path('author/<int:pk>/update/', views.AuthorUpdate.as_view(), name='author_update'),
+    path('author/<int:pk>/delete/', views.AuthorDelete.as_view(), name='author_delete'),
+]
+urlpatterns += [
+    path('book/<uuid:pk>/renew/', views.renew_book_librarian, name='renew-book-librarian'),]
+
+
+

@@ -17,3 +17,25 @@
       <p>There are no authors in the library.</p>
     {% endif %}
 {% endblock %}
+{% extends "base_generic.html" %}
+    {% block content %}
+        <h1>Author List</h1>
+    {% if perms.catalog.can_mark_returned %}
+        <a href="{% url 'author_create' %}">Create New Author</a>
+{% endif %}
+{% if author_list %}
+    <ul>
+        {% for author in author_list %}
+        <li>
+            <a href="{{ author.get_absolute_url }}">{{ author.first_name }} {{ author.last_name }}</a>
+{% if perms.catalog.can_mark_returned %}
+    <a href="{% url 'author_update' author.id %}">Edit</a>
+    <a href="{% url 'author_delete' author.id %}">Delete</a>
+{% endif %}
+        </li>
+{% endfor %}
+    </ul>
+{% else %}
+    <p>There are no authors in the library.</p>
+{% endif %}
+{% endblock %}
