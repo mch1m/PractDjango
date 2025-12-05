@@ -9,6 +9,8 @@
       {% for book in book_list %}
       <li>
         <a href="{{ book.get_absolute_url }}">{{ book.title }}</a> ({{book.author}})
+        - <a href="{% url 'book_delete' book.id  %}">Delete author</a>,
+          <a href="{% url 'book_update' book.id  %}">Edit author</a>
       </li>
       {% endfor %}
 
@@ -16,4 +18,7 @@
     {% else %}
       <p>There are no books in the library.</p>
     {% endif %}
+
+<a href="{% url 'book_create' %}">Book author</a> <br>
+
 {% endblock %}

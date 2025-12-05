@@ -1,13 +1,26 @@
-from django.urls import reverse_lazy
-from django.http import HttpResponseRedirect
-import datetime
+from django.shortcuts import render
+from .models import Book, Author, BookInstance, Genre
 from django.views import generic
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.mixins import PermissionRequiredMixin
+from .models import Author
 from django.contrib.auth.decorators import permission_required
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.urls import reverse_lazy
+from django.shortcuts import get_object_or_404
+from django.http import HttpResponseRedirect
+from django.urls import reverse
+import datetime
 from .forms import RenewBookForm
-from .models import Book, Author, BookInstance, Genre
+from django.shortcuts import render
+from django.views import generic
+from django.urls import reverse_lazy
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.shortcuts import render
+from django.views import generic
+from django.urls import reverse_lazy
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from .models import Book, Author
 
 def index(request):
     """
@@ -22,11 +35,6 @@ def index(request):
     num_genres=Genre.objects.count()
     num_visits=request.session.get('num_visits', 0)
     request.session['num_visits'] = num_visits+1
-    # Проверьте себя
-    num_genres = Genre.objects.count()
-    # Книги, содержащие слово 'the' в заголовке (без учета регистра)
-    num_books_with_the = Book.objects.filter(title__icontains='the').count()
-
     # Отрисовка HTML-шаблона index.html с данными внутри
     # переменной контекста context
     return render(
@@ -36,13 +44,12 @@ def index(request):
                  'num_instances_available':num_instances_available,
                  'num_authors':num_authors, 'num_genres':num_genres, 'num_visits':num_visits},
     )
+# Create your views here.
 
 class BookListView(generic.ListView):
     model = Book
     paginate_by = 1
 
-    def get_queryset(self):
-        return Book.objects.all().order_by('title')
 
 class BookDetailView(generic.DetailView):
         model = Book
@@ -50,9 +57,6 @@ class BookDetailView(generic.DetailView):
 class AuthorListView(generic.ListView):
     model = Author
     paginate_by = 1
-
-    def get_queryset(self):
-        return Author.objects.all().order_by('last_name', 'first_name')
 
 class AuthorDetailView(generic.DetailView):
     model = Author
@@ -124,26 +128,18 @@ class AuthorDelete(DeleteView):
     model = Author
     success_url = reverse_lazy('authors')
 
+
+
+
 class BookCreate(CreateView):
     model = Book
-    fields = ['title', 'author', 'summary', 'isbn', 'genre', 'language']
-    template_name = 'catalog/book_form.html'
-
-    def get_success_url(self):
-        return reverse_lazy('book-detail', kwargs={'pk': self.object.pk})
+    fields = '__all__'
 
 class BookUpdate(UpdateView):
     model = Book
-    fields = ['title', 'author', 'summary', 'isbn', 'genre', 'language']
-    template_name = 'catalog/book_form.html'
-
-    def get_success_url(self):
-        return reverse_lazy('book-detail', kwargs={'pk': self.object.pk})
+    fields = ['title', 'author','summary','isbn', 'genre']
 
 class BookDelete(DeleteView):
     model = Book
-    template_name = 'catalog/book_confirm_delete.html'
-    success_url = reverse_lazy('books')
-
-
+    success_url = reverse_lazy('book')
 
