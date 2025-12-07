@@ -9,15 +9,18 @@
       {% for author in author_list %}
       <li>
         <a href="{{ author.get_absolute_url }}">{{ author.first_name }}</a> ({{author.last_name}})
+                    {% if user.is_authenticated and user.is_staff %}
         - <a href="{% url 'author_delete' author.id  %}">Delete author</a>,
           <a href="{% url 'author_update' author.id  %}">Edit author</a>
       </li>
+        {% endif %}
       {% endfor %}
 
     </ul>
     {% else %}
       <p>There are no authors in the library.</p>
     {% endif %}
-
+{% if user.is_authenticated and user.is_staff %}
 <a href="{% url 'author_create' %}">Create author</a> <br>
+{% endif %}
 {% endblock %}

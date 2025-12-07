@@ -48,7 +48,7 @@ def index(request):
 
 class BookListView(generic.ListView):
     model = Book
-    paginate_by = 1
+    paginate_by = 3
 
 
 class BookDetailView(generic.DetailView):
@@ -56,7 +56,7 @@ class BookDetailView(generic.DetailView):
 
 class AuthorListView(generic.ListView):
     model = Author
-    paginate_by = 1
+    paginate_by = 2
 
 class AuthorDetailView(generic.DetailView):
     model = Author
@@ -85,7 +85,6 @@ class LoanedBooksByAllListView(PermissionRequiredMixin, generic.ListView):
     def get_queryset(self):
         return BookInstance.objects.filter(status__exact='o').order_by('due_back')
 
-@permission_required('catalog.can_mark_returned')
 def renew_book_librarian(request, pk):
     """
     View function for renewing a specific BookInstance by librarian
@@ -114,7 +113,6 @@ def renew_book_librarian(request, pk):
 
     return render(request, 'catalog/book_renew_librarian.html', {'form': form, 'bookinst':book_inst})
 
-
 class AuthorCreate(CreateView):
     model = Author
     fields = '__all__'
@@ -127,8 +125,6 @@ class AuthorUpdate(UpdateView):
 class AuthorDelete(DeleteView):
     model = Author
     success_url = reverse_lazy('authors')
-
-
 
 
 class BookCreate(CreateView):

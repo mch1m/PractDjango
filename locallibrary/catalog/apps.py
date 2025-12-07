@@ -1,4 +1,4 @@
-from django.apps import AppConfig
+from django.apps import AppConfig #определяет поведение и настройки конкретного приложения
 
 
 class CatalogConfig(AppConfig):

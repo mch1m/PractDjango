@@ -11,6 +11,7 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
+#устанавливает настройки джанго
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'locallibrary.settings')
-
+# Создаем WSGI-приложение
 application = get_wsgi_application()
